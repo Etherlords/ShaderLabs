@@ -1,0 +1,43 @@
+/*****************************************************************************
+ *
+ * ADOBE SYSTEMS INCORPORATED
+ * Copyright (C) 2010 Adobe Systems Incorporated
+ * All Rights Reserved.
+ *
+ * NOTICE:  Adobe permits you to use, modify, and distribute this file in 
+ * accordance with the terms of the Adobe license agreement accompanying it.  
+ * If you have received this file from a source other than Adobe, then your 
+ * use, modification, or distribution of it requires the prior written 
+ * permission of Adobe.
+ *
+ *****************************************************************************/
+<languageVersion: 1.0;>
+
+kernel AlphaFromMaxColor
+<
+	namespace: "AfterEffects";
+	vendor : "Adobe Systems Incorporated";
+	version : 2;
+    description : "Estimate alpha based on color channels.";
+	displayname: "Alpha From Max Color";
+	category: "Utility";
+>
+{
+    parameter float alphaFactor
+    <
+       
+        minValue: -1.0;
+        maxValue: 1.0;
+        defaultValue: 0.1;
+     >;
+     
+	input image4 src;
+	output pixel4 dst;
+	
+    void
+    evaluatePixel()
+    {
+		dst = sampleNearest(src, outCoord());
+		dst.a = dst.a - alphaFactor;
+	}
+}

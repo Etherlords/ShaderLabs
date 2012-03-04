@@ -1,0 +1,66 @@
+<languageVersion: 1.0;>
+ 
+// invertRGB: A simple example to demonstrate how to invert the RGB color 
+//            space.
+kernel invertRGB
+<   namespace : "AIF";
+    vendor : "ShaderLabs";
+    version : 2;
+    description : "copy pixels from rectangle of 1 image to another image"; >
+{
+
+    parameter int isUseMerge
+    <
+        valie:int(0);
+        defaultValue:int(0);
+        minValue:int(0);
+        maxValue:int(1);
+    >;
+    parameter float4 rect
+    <
+        valie:float2(0.0);
+        defaultValue:float4(0.0);
+        minValue:float4(-400.0);
+        maxValue:float4(400.0);
+    >
+    ;
+    
+    parameter float2 point
+    <
+        valie:float2(0.0);
+        defaultValue:float2(0.0);
+        minValue:float2(-800.0);
+        maxValue:float2(800.0);
+    >
+    ;
+
+
+    input image4 copyFrom;
+    input image4 copyTo;
+    
+    
+    
+    output float4 dst;
+   
+   
+    void
+    evaluatePixel()
+    {
+        // Obtain the input pixel color
+        float4 inputColor = sampleNearest(copyTo, outCoord());
+        float4 mergetImagePixel = sampleNearest(copyFrom, outCoord() - point);
+        
+       // dst = inputColor;
+       
+       if(
+       
+            outCoord().x > (rect[0] + point[0]) && outCoord().x  < (rect[2] + rect[0] + point[0])
+                                            &&
+            outCoord().y > (rect[1] + point[1]) && outCoord().y  < (rect[3] + rect[1] + point[1])
+        )
+            dst = mergetImagePixel;
+        else
+            dst = inputColor;
+    }
+}
+
