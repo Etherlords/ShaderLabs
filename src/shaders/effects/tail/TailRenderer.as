@@ -104,6 +104,9 @@ package  shaders.effects.tail
 			var rec:Rectangle = new Rectangle();
 			var b:ByteArray;
 			
+			var bb:BitmapData = new BitmapData(500, 500, true, 0x00000000);
+			
+		
 			//eraseShader.data.alphaFactor.value = [1 / (numberOfSteps - 1)];
 			
 			for (var i:int = 0; i < numberOfSteps; i++)
@@ -112,8 +115,10 @@ package  shaders.effects.tail
 				tailInstance.y += deltay;
 				
 				m = new Matrix();
-				m.tx = tailInstance.x;
-				m.ty = tailInstance.y;
+				
+				m.tx = tailInstance.x + (-5 + Math.random() * 10);
+				m.ty = tailInstance.y + ( -5 + Math.random() * 10);
+				
 				
 				p = new Point(m.tx, m.ty);
 				
@@ -126,6 +131,7 @@ package  shaders.effects.tail
 				
 				//maskInstance.bitmapData.draw(tailInstance, m);
 				maskInstance.bitmapData.copyPixels(patter, patter.rect, p, patter, new Point, true);
+				
 					
 				//b = maskInstance.bitmapData.getPixels(rec);
 				//b.position = 0;
@@ -148,7 +154,7 @@ package  shaders.effects.tail
 			
 			
 			}
-			
+			//maskInstance.bitmapData.merge(bb, bb.rect, new Point, 10, 10, 10, 10);
 			shaderJob = new ShaderJob(eraseShader, maskInstance.bitmapData);
 			shaderJob.start(true);
 			

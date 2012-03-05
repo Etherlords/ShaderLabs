@@ -38,7 +38,7 @@ package experiments
 			
 			reactor = new PerlinEffect();
 			
-			tailSource = new TailSource(reactor, 800, 624);
+			tailSource = new TailSource(reactor, 500, 500);
 			
 			var sourcePreview:Bitmap = new Bitmap(tailSource.source);
 			
@@ -85,8 +85,20 @@ package experiments
 		private function onFrame(e:Event):void 
 		{
 			reactor.render();
-			reactor.fractal = combo.getItemAt(combo.selectedIndex).data
-			reactor.dataChannel = parseInt(lable.text) || 1;
+			
+			if (reactor.fractal != combo.getItemAt(combo.selectedIndex).data)
+			{
+				reactor.fractal = combo.getItemAt(combo.selectedIndex).data
+				reactor.make();
+			}
+			
+			if (reactor.dataChannel != (parseInt(lable.text) || 1))
+			{
+				reactor.dataChannel = parseInt(lable.text) || 1;
+				reactor.make();
+			}
+			
+			
 			
 		}
 		

@@ -1,11 +1,13 @@
 package experiments 
 {
+	import com.sociodox.theminer.TheMiner;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
 	import flash.display.BlendMode;
 	import flash.display.ShaderJob;
 	import flash.display.Sprite;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -49,6 +51,8 @@ package experiments
 			//return;
 			
 			
+			
+			
 			bmp1 = new BitmapData(500, 500, true, 0x0);
 			bmp2 = new BitmapData(500, 500, true, 0x33000000);
 			bmp3 = new BitmapData(500, 500, true, 0x0);
@@ -76,17 +80,22 @@ package experiments
 			copyPixels.copyFrom = bmp2;
 
 			
+			addChild(new TheMiner(true));
+			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, mC);
 			
 			
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, startJob);
-			
-			
-			
-			for (var i:int = 0; i < 100; i++)
-				startJob();
+		
 				
 			trace('shader time: ' + shaderTime);
 			trace('copyPixels time: ' + copyTimer);
+		}
+		
+		private function mC(e:*):void 
+		{
+				
+			for (var i:int = 0; i < 100; i++)
+				startJob();
 		}
 		
 		private var shaderTime:Number = 0;
@@ -97,8 +106,8 @@ package experiments
 		{
 			var t:Number = getTimer();
 			
-			shader = new ShaderJob(copyPixels, bmp1);
-			shader.start(false);
+			shader = new ShaderJob(copyPixels, bmp1, 1, 1);
+			shader.start(true);
 			shaderTime += getTimer() - t;
 			
 			t = getTimer();

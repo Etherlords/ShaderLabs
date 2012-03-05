@@ -30,7 +30,7 @@
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>D:\etherlords\ShaderLabs\src\experiments\TestCopyPixels.as</path-element>
+    <path-element>D:\etherlords\ShaderLabs\src\experiments\TailEffectExperiments.as</path-element>
   </file-specs>
   <default-background-color>#C0C0C0</default-background-color>
   <default-frame-rate>30</default-frame-rate>

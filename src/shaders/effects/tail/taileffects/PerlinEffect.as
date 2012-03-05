@@ -25,16 +25,24 @@ package  shaders.effects.tail.taileffects
 		{
 			super.initilize();
 			
-			chaos = new BitmapData(50, 50, true, 0x00000000);
+			chaos = new BitmapData(150, 150, true, 0x00000000);
 		}
 		
 		override public function render():void 
 		{
 			super.render();
 			
+			
+		}
+		
+		override public function make():void 
+		{
+			super.make();
+			
+
 			output.lock();
 			
-			chaos.perlinNoise(3, 3, 20, Math.random() * 100, true, fractal,  dataChannel, false)
+			chaos.perlinNoise(50, 50, 20, Math.random() * 100, true, fractal,  dataChannel | BitmapDataChannel.ALPHA - 2 , false)
 			
 			var p:Point = new Point();
 			var r:Rectangle = new Rectangle();
@@ -43,8 +51,8 @@ package  shaders.effects.tail.taileffects
 			{
 				for (var j:int = 0; j < 10; j++)
 				{
-					p.x = i * 50;
-					p.y = j * 50;
+					p.x = i * 150;
+					p.y = j * 150;
 					
 					output.copyPixels(chaos, output.rect, p, chaos, new Point);
 					//output.merge(chaos, chaos.rect, p, 50, 1, 1, 10);
@@ -52,14 +60,6 @@ package  shaders.effects.tail.taileffects
 			}
 			
 			output.unlock();
-		}
-		
-		override public function make():void 
-		{
-			super.make();
-			
-
-			render();
 			
 		}
 		
