@@ -8,7 +8,7 @@ package shaders
 	 */
 	public class AlphaShader extends Shader 
 	{
-		[Embed(source="../../lib/shaders/alpha/AlphaShader.pbj", mimeType="application/octet-stream")]
+		[Embed(source="../../lib/shaders/alpha/alphaShader.pbj", mimeType="application/octet-stream")]
 		private var shaderData:Class;
 		
 		
