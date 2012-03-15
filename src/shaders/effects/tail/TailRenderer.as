@@ -1,19 +1,10 @@
 package  shaders.effects.tail
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.DisplayObjectContainer;
-	import flash.display.Shader;
-	import flash.display.ShaderJob;
-	import flash.display.Sprite;
-	import flash.events.TimerEvent;
-	import flash.geom.ColorTransform;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.utils.ByteArray;
-	import flash.utils.Timer;
-	import shaders.AlphaShader;
+	import flash.display.*;
+	import flash.events.*;
+	import flash.geom.*;
+	import flash.utils.*;
+	import shaders.*;
 	/**
 	 * ...
 	 * @author 
@@ -31,9 +22,11 @@ package  shaders.effects.tail
 		private var shaderJob:ShaderJob;
 		
 		private var patter:BitmapData = new TailPattern1();
+		private var tailTarget:TailTargetObject;
 		
-		public function TailRenderer(tailSource:BitmapData, instance:DisplayObjectContainer) 
+		public function TailRenderer(tailSource:BitmapData, instance:DisplayObjectContainer, tailTarget:TailTargetObject) 
 		{
+			this.tailTarget = tailTarget;
 			this.instance = instance;
 			this.tailSource = tailSource;
 			
@@ -46,6 +39,8 @@ package  shaders.effects.tail
 			
 			tailInstance.visible = false;
 			tailSourceInstance = new Bitmap(tailSource);
+			
+			
 			maskInstance = new Bitmap(new BitmapData(tailSource.width, tailSource.height, true, 0x0));
 			
 			instance.addChild(tailSourceInstance);
@@ -56,7 +51,7 @@ package  shaders.effects.tail
 			
 			eraseShader = new AlphaShader();
 			eraseShader.data.src.input = maskInstance.bitmapData;
-			eraseShader.data.alphaFactor.value = [0.1];
+			eraseShader.data.alphaFactor.value = [0.05];
 		
 			
 		
@@ -83,7 +78,7 @@ package  shaders.effects.tail
 			
 			var m:Matrix;
 			var lastPoint:Point = new Point(tailInstance.x, tailInstance.y);
-			var newPoint:Point = new Point(instance.mouseX, instance.mouseY);
+			var newPoint:Point = new Point(tailTarget.x, tailTarget.y);
 			
 			var distance:Number = Point.distance(lastPoint, newPoint);
 			
@@ -99,12 +94,7 @@ package  shaders.effects.tail
 			transform.alphaMultiplier = 0.1;
 			var alphaStep:Number = 1 / numberOfSteps;
 			
-			//eraseShader.data.alphaFactor.value = [0.01];
-			var bmp:BitmapData;
-			var rec:Rectangle = new Rectangle();
-			var b:ByteArray;
-			
-			var bb:BitmapData = new BitmapData(500, 500, true, 0x00000000);
+
 			
 		
 			//eraseShader.data.alphaFactor.value = [1 / (numberOfSteps - 1)];
@@ -116,21 +106,18 @@ package  shaders.effects.tail
 				
 				m = new Matrix();
 				
-				m.tx = tailInstance.x + (-5 + Math.random() * 10);
+				m.tx = tailInstance.x + ( -5 + Math.random() * 10);
 				m.ty = tailInstance.y + ( -5 + Math.random() * 10);
 				
 				
 				p = new Point(m.tx, m.ty);
 				
-				rec.x = p.x;
-				rec.y = p.y;
-				rec.width = tailInstance.width;
-				rec.height = tailInstance.height;
 				
-				transform.alphaMultiplier += alphaStep;
+				
+			
 				
 				//maskInstance.bitmapData.draw(tailInstance, m);
-				maskInstance.bitmapData.copyPixels(patter, patter.rect, p, patter, new Point, true);
+				maskInstance.bitmapData.copyPixels(patter, patter.rect, p, patter, new Point(10), true);
 				
 					
 				//b = maskInstance.bitmapData.getPixels(rec);
@@ -154,9 +141,10 @@ package  shaders.effects.tail
 			
 			
 			}
+			//shaderJob.cancel();
 			//maskInstance.bitmapData.merge(bb, bb.rect, new Point, 10, 10, 10, 10);
 			shaderJob = new ShaderJob(eraseShader, maskInstance.bitmapData);
-			shaderJob.start(true);
+			shaderJob.start(false);
 			
 			maskInstance.bitmapData.unlock();
 		

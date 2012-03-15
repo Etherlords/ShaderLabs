@@ -22,7 +22,7 @@ package shaders
 		 */
 		public function set shaderSource(value:*):void 
 		{
-			data.src.input = value
+			data.src.input = value;
 		}
 		
 		public function set width(value:Number):void 
